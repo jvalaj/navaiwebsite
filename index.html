@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nav - The AI Agent for your Mac</title>
+    <meta name="description" content="Nav is an on-device AI agent for macOS that navigates apps, clicks buttons, fills forms, and completes tasks on your Mac — just like a human would. No setup required.">
+    <meta name="keywords" content="Nav, AI agent, macOS, Mac automation, AI assistant, desktop agent, on-device AI">
+    <meta name="author" content="Nav">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nav - The AI Agent for your Mac">
+    <meta property="og:description" content="Nav navigates apps, clicks buttons, and completes tasks on your Mac — just like a human would. No setup required.">
+    <meta property="og:image" content="navlogo.png">
+    <meta property="og:site_name" content="Nav">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Nav - The AI Agent for your Mac">
+    <meta name="twitter:description" content="Nav navigates apps, clicks buttons, and completes tasks on your Mac — just like a human would. No setup required.">
+    <meta name="twitter:image" content="navlogo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="navlogo.png">
+    <link rel="apple-touch-icon" href="navlogo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Figtree", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-optical-sizing: auto;
+            color: #1a1a1a;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Page container with vertical guide lines */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-left: 1px solid #e8e8e8;
+            border-right: 1px solid #e8e8e8;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #fff;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .header span {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 0px 40px 0;
+            text-align: center;
+        }
+
+        .macbook-container {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .macbook-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 6.5%;
+            left: 11.5%;
+            right: 11.5%;
+            bottom: 14%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .badge .apple-logo-img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .hero-title {
+            font-family: "Figtree", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-style: italic;
+            font-size: 72px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 28px;
+        }
+
+        .hero-subtitle .icons {
+            display: inline-flex;
+            gap: 2px;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        .hero-subtitle .icon-pill {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ff8a65, #ffb74d);
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+        }
+
+        .hero-subtitle .icon-pill.green {
+            background: linear-gradient(135deg, #aed581, #81c784);
+        }
+
+        .hero-subtitle .icon-pill svg {
+            width: 20px;
+            height: 20px;
+            fill: #fff;
+        }
+
+        .cursor-icon {
+            display: inline-block;
+            animation: cursorSlide 2.5s ease-in-out forwards;
+            position: relative;
+            top: 4px;
+            margin-left: -8px;
+        }
+
+        @keyframes cursorSlide {
+            0% {
+                transform: translateX(-60px);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(0px);
+                opacity: 1;
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 12px;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+        }
+
+        .hero-note {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* Feature Bar */
+        .feature-bar {
+            padding: 0 40px;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            border-top: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 40px;
+            font-size: 15px;
+            color: #555;
+            border-right: 1px solid #e8e8e8;
+        }
+
+        .feature-item:last-child {
+            border-right: none;
+        }
+
+        .feature-item svg {
+            width: 18px;
+            height: 18px;
+            color: #888;
+            flex-shrink: 0;
+        }
+
+        /* Introduction Section */
+        .introduction {
+            padding: 80px 40px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .section-label .dot {
+            width: 8px;
+            height: 8px;
+            background: #6366f1;
+            border-radius: 50%;
+        }
+
+        .section-label-left {
+            justify-content: flex-start;
+        }
+
+        .intro-heading {
+            font-size: 38px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: #666;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: #f7f7f8;
+            padding: 80px 40px;
+            border-radius: 16px;
+            margin: 0 20px;
+        }
+
+        .benefits-inner {
+        }
+
+        .benefits-heading {
+            font-size: 38px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px 40px;
+        }
+
+        .benefit-card {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: #2a2a2a;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .benefit-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .benefit-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .benefit-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 40px;
+        }
+
+        .services-heading {
+            font-size: 38px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 60px;
+            line-height: 1.3;
+        }
+
+        .services-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .service-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .service-number {
+            font-size: 14px;
+            color: #bbb;
+            font-weight: 500;
+            min-width: 40px;
+            padding-top: 4px;
+        }
+
+        .service-item-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .service-item-content p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .service-item.clickable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-item.clickable:hover {
+            opacity: 0.7;
+        }
+
+        .service-item.clickable.active h3,
+        .service-item.clickable.active p {
+            color: #1a1a1a;
+        }
+
+        .service-illustration {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .illustration-card .avatars {
+            display: flex;
+            gap: -8px;
+            margin-bottom: 16px;
+        }
+
+        .illustration-card .avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 2px solid #fff;
+            margin-right: -8px;
+        }
+
+        .illustration-card .link-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .illustration-card .radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+
+        .illustration-card .radio.active {
+            border-color: #6366f1;
+            background: #6366f1;
+        }
+
+        .illustration-card .link-text {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .illustration-card .bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .illustration-card .get-link {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .illustration-card .get-link small {
+            display: block;
+            font-weight: 400;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .illustration-card .create-btn {
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .illustration-card {
+            animation: illustrationPulse 0.6s ease-out;
+        }
+
+        @keyframes illustrationPulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .cursor-indicator {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .cursor-indicator.active {
+            animation: cursorFloat 0.8s ease-in-out forwards;
+        }
+
+        @keyframes cursorFloat {
+            0% {
+                opacity: 1;
+                transform: translate(-20px, -20px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(40px, 40px) scale(0.5);
+            }
+        }
+
+        /* Works With Apps */
+        .works-with {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .works-with p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 32px;
+        }
+
+        .app-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .app-logo {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #333;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .testimonial-quote {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 24px;
+        }
+
+        .testimonial-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-info {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* How it Works */
+        .how-it-works {
+            padding: 80px 40px;
+        }
+
+        .how-steps {
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+
+        .how-step {
+            display: grid;
+            grid-template-columns: 60px 100px 1fr;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 48px;
+        }
+
+        .how-step-number {
+            font-size: 14px;
+            color: #bbb;
+            padding-top: 8px;
+        }
+
+        .how-step-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            text-align: center;
+            margin-top: 4px;
+            height: 32px;
+        }
+
+        .how-step-content h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .how-step-content p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* FAQ */
+        .faq {
+            background: #f7f7f8;
+            padding: 80px 40px;
+            border-radius: 16px;
+            margin: 0 20px;
+        }
+
+        .faq-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-heading {
+            font-size: 38px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: #fafafa;
+        }
+
+        .faq-toggle {
+            font-size: 20px;
+            color: #999;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-answer.open {
+            max-height: 200px;
+        }
+
+        .faq-answer-content {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            padding: 80px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .footer-logo span {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .footer-tagline {
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .footer-card {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .footer-card-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .footer-card-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .footer-card-logo span {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .footer-card h3 {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .footer-card .book-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-card .reach-out {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer-card .email-label {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .footer-card .email {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-container {
+                border-left: none;
+                border-right: none;
+            }
+
+            .header {
+                padding: 12px 20px;
+            }
+
+            .hero {
+                padding: 30px 20px 0;
+            }
+
+            .macbook-container img {
+                display: none;
+            }
+
+            .hero-content {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding: 20px;
+            }
+
+            .hero-subtitle {
+                font-size: 22px;
+            }
+
+            .feature-bar {
+                flex-direction: column;
+                padding: 0 20px;
+            }
+
+            .feature-item {
+                border-right: none;
+                border-bottom: 1px solid #e8e8e8;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+
+            .feature-item:last-child {
+                border-bottom: none;
+            }
+
+            .introduction {
+                padding: 60px 20px;
+            }
+
+            .intro-heading {
+                font-size: 28px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .stat-value {
+                font-size: 40px;
+            }
+
+            .benefits {
+                padding: 60px 20px;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .benefits-heading {
+                font-size: 28px;
+            }
+
+            .services {
+                padding: 60px 20px;
+            }
+
+            .services-heading {
+                font-size: 28px;
+            }
+
+            .services-content {
+                grid-template-columns: 1fr;
+            }
+
+            .works-with {
+                padding: 40px 20px;
+            }
+
+            .app-logos {
+                gap: 24px;
+            }
+
+            .testimonial {
+                padding: 60px 20px;
+            }
+
+            .testimonial-quote {
+                font-size: 18px;
+            }
+
+            .how-it-works {
+                padding: 60px 20px;
+            }
+
+            .how-step {
+                grid-template-columns: 40px 80px 1fr;
+                gap: 12px;
+            }
+
+            .how-step-content h3 {
+                font-size: 22px;
+            }
+
+            .faq {
+                padding: 60px 20px;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .faq-heading {
+                font-size: 28px;
+            }
+
+            .footer-cta {
+                grid-template-columns: 1fr;
+                padding: 60px 20px;
+            }
+
+            .footer-tagline {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+    <!-- Header -->
+    <div class="header-wrapper">
+    <header class="header">
+        <img src="navlogo.png" alt="Nav Logo">
+        <span>Nav</span>
+    </header>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="macbook-container">
+            <img src="apple-macbookpro14-front.png" alt="MacBook Pro">
+            <div class="hero-content">
+                <div class="badge">
+                    <img src="Apple-Logo.png" alt="Apple" class="apple-logo-img">
+                    Available for macOS
+                </div>
+                <div class="hero-title">Nav</div>
+                <div class="hero-subtitle">
+                    The AI Agent for your
+                    <br>Mac.
+                </div>
+                <a href="https://github.com/jvalaj/navdesktopapp" class="cta-button">Get Started</a>
+                <p class="hero-note">No setup required</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Bar -->
+    <div class="feature-bar">
+        <div class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Works across apps
+        </div>
+        <div class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Acts like a human
+        </div>
+        <div class="feature-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Ready out of the box
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <section class="introduction">
+        <div class="section-label">
+            <span class="dot"></span>
+            Introduction
+        </div>
+        <h2 class="intro-heading">Nav helps you get things done on your Mac&mdash;without changing how you work</h2>
+        <div class="stats">
+            <div>
+                <div class="stat-value" data-target="1000" data-suffix="+" data-format="k">0</div>
+                <div class="stat-label">Screen elements per view</div>
+            </div>
+            <div>
+                <div class="stat-value" data-target="50" data-suffix="+">0</div>
+                <div class="stat-label">Apps supported</div>
+            </div>
+            <div>
+                <div class="stat-value" data-target="98" data-suffix="%">0</div>
+                <div class="stat-label">Click Accuracy</div>
+            </div>
+            <div>
+                <div class="stat-value" data-target="0" data-suffix="">0</div>
+                <div class="stat-label">Setup steps</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits">
+        <div class="benefits-inner">
+            <div class="section-label">
+                <span class="dot"></span>
+                Benefits
+            </div>
+            <h2 class="benefits-heading">Less friction. More progress.</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><path d="M13 3l3.5 7 7.5 1-5.5 5 1.5 7.5L13 19.5 6 23.5l1.5-7.5L2 11l7.5-1z"/></svg>
+                    </div>
+                    <h3 class="benefit-title">Fewer steps</h3>
+                    <p class="benefit-desc">Nav handles repetitive actions so you don't have to click through menus and windows.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3" fill="#fff"/><rect x="7" y="7" width="10" height="10" rx="2" fill="#fff" stroke="#fff" stroke-width="0.5"/></svg>
+                    </div>
+                    <h3 class="benefit-title">Works as you do</h3>
+                    <p class="benefit-desc">Nav follows the same steps you would&mdash;across apps, dialogs, and screens.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3 class="benefit-title">No workflows to build</h3>
+                    <p class="benefit-desc">There's nothing to configure or maintain. Nav adapts as your screen changes.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="#fff" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="#fff" stroke-width="2"/></svg>
+                    </div>
+                    <h3 class="benefit-title">Always available</h3>
+                    <p class="benefit-desc">Nav lives in the menu bar and is ready whenever you need help finishing a task.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3 class="benefit-title">Stays local</h3>
+                    <p class="benefit-desc">Your screen and actions stay on your Mac. You remain in control at all times.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#fff" stroke-width="2"/><path d="M7 15h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3 class="benefit-title">Built for macOS</h3>
+                    <p class="benefit-desc">Nav uses native system behavior, not brittle scripts or shortcuts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+        <div class="section-label">
+            <span class="dot"></span>
+            Services
+        </div>
+        <h2 class="services-heading">What Nav can do for your<br>computer.</h2>
+        <div class="services-content">
+            <div class="service-list">
+                <div class="service-item clickable" data-service="1">
+                    <span class="service-number">/001</span>
+                    <div class="service-item-content">
+                        <h3>Navigate</h3>
+                        <p>Nav can open apps, click buttons, select menus, and move through interfaces just like you would.</p>
+                    </div>
+                </div>
+                <div class="service-item clickable" data-service="2">
+                    <span class="service-number">/002</span>
+                    <div class="service-item-content">
+                        <h3>Work across apps</h3>
+                        <p>Nav can move between multiple apps and windows to complete a task from start to finish.</p>
+                    </div>
+                </div>
+                <div class="service-item clickable" data-service="3">
+                    <span class="service-number">/003</span>
+                    <div class="service-item-content">
+                        <h3>Follow on-screen context</h3>
+                        <p>Nav reacts to what's visible on your screen, adjusting steps as the interface changes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="service-illustration" id="serviceIllustration">
+                <div class="cursor-indicator" id="cursorIndicator">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                        <path d="M5 3l14 8-6.5 1.5L11 19z"></path>
+                    </svg>
+                </div>
+                <div class="illustration-card" id="illustrationCard">
+                    <div class="avatars">
+                        <div class="avatar-circle" style="background: #c5a882;"></div>
+                        <div class="avatar-circle" style="background: #8baac5;"></div>
+                        <div class="avatar-circle" style="background: #a8c582;"></div>
+                    </div>
+                    <div style="height:1px;background:#f0f0f0;margin:12px 0;"></div>
+                    <div class="link-row">
+                        <div class="radio active"></div>
+                        <span class="link-text">https://insert.supply</span>
+                    </div>
+                    <div class="link-row">
+                        <div class="radio"></div>
+                        <span class="link-text">Muzamal Hussain</span>
+                    </div>
+                    <div class="bottom-row">
+                        <div class="get-link">
+                            Get Link
+                            <small>Invite by email</small>
+                        </div>
+                        <button class="create-btn">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Works With Apps -->
+    <section class="works-with">
+        <p>Works with the apps you use:</p>
+        <div class="app-logos">
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M21 5L12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM17 13v8M13 17h8"/></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="none" stroke="#333" stroke-width="2"/><text x="6" y="16" font-size="11" font-weight="700" fill="#333">Be</text></svg>
+            </div>
+            <div class="app-logo">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial">
+        <p class="testimonial-quote">Nav helped me file my taxes. It opened the tax website, navigated the forms, and walked through each section so I didn&rsquo;t miss anything.</p>
+        <p class="testimonial-name">Robert Carter</p>
+        <p class="testimonial-info">63 &middot; Retired &middot; California</p>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="section-label">
+            <span class="dot"></span>
+            How it works
+        </div>
+        <div class="how-steps">
+            <div class="how-step">
+                <span class="how-step-number">/001</span>
+                <span class="how-step-tag">Understanding</span>
+                <div class="how-step-content">
+                    <h3>Understanding what&rsquo;s happening on your screen</h3>
+                    <p>Nav continuously interprets what's visible on your screen using a multimodal system that combines visual understanding with language context. It recognizes interface elements, text, layouts, and state&mdash;so it understands not just what an app is, but what it's currently showing.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <span class="how-step-number">/002</span>
+                <span class="how-step-tag">Planning</span>
+                <div class="how-step-content">
+                    <h3>Deciding the next steps like a user would</h3>
+                    <p>Based on your request and what it sees on screen, Nav plans a sequence of actions to reach the desired outcome. It reasons through each step, adapting if the interface changes&mdash;similar to how a person would navigate menus, dialogs, and workflows.</p>
+                </div>
+            </div>
+            <div class="how-step">
+                <span class="how-step-number">/003</span>
+                <span class="how-step-tag">Action</span>
+                <div class="how-step-content">
+                    <h3>Taking actions and learning from the results</h3>
+                    <p>Nav performs actions directly on your Mac&mdash;clicking, typing, searching, and navigating apps&mdash;while observing the results of each step. It maintains short-term context and memory so it can stay oriented, recover from errors, and continue tasks without starting over.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="faq-inner">
+            <div class="section-label">
+                <span class="dot"></span>
+                Faq's
+            </div>
+            <h2 class="faq-heading">Understanding Nav</h2>
+
+            <div class="faq-item open">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What is Nav?
+                    <span class="faq-toggle">&times;</span>
+                </div>
+                <div class="faq-answer open">
+                    <div class="faq-answer-content">
+                        Nav is an on-device AI agent that can navigate apps, understand what's on your screen, and perform actions like clicking, typing, and searching&mdash;just like a user would.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How does Nav work?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Nav uses a multimodal AI system that sees your screen, understands the current context, plans the right actions, and executes them natively on your Mac&mdash;just like a human user would.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What kinds of tasks can Nav handle?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Nav can handle a wide range of tasks including navigating apps, filling out forms, managing files, switching between windows, and completing multi-step workflows across different applications.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Does Nav work with all apps?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Nav supports 50+ popular macOS applications and is continuously expanding its compatibility. It works with most standard macOS apps that follow Apple's interface guidelines.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Is my data private?
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes. Nav runs locally on your Mac. Your screen data and actions stay on your device. You remain in full control at all times.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="footer-left">
+            <div class="footer-logo">
+                <img src="navlogo.png" alt="Nav Logo">
+                <span>Nav</span>
+            </div>
+            <h2 class="footer-tagline">The AI Agent to Navigate your Device.</h2>
+        </div>
+        <div class="footer-card">
+            <div class="footer-card-logo">
+                <img src="navlogo.png" alt="Nav Logo">
+                <span>Nav</span>
+            </div>
+            <h3>Book a 15-min<br>intro call</h3>
+            <button class="book-btn">Book a Call</button>
+            <p class="reach-out">Reach out if you need a Nav<br>to meet your business needs.</p>
+            <p class="email-label">or Email us at</p>
+            <p class="email">careersatnavai@gmail.com</p>
+        </div>
+    </section>
+
+    </div><!-- end page-container -->
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const answer = item.querySelector('.faq-answer');
+            const toggle = item.querySelector('.faq-toggle');
+            const isOpen = item.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => {
+                i.classList.remove('open');
+                i.querySelector('.faq-answer').classList.remove('open');
+                i.querySelector('.faq-toggle').textContent = '+';
+            });
+
+            // Open clicked if it was closed
+            if (!isOpen) {
+                item.classList.add('open');
+                answer.classList.add('open');
+                toggle.textContent = '\u00d7';
+            }
+        }
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-value[data-target]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                const suffix = counter.dataset.suffix || '';
+                const format = counter.dataset.format;
+                const duration = 1500;
+                const start = performance.now();
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // ease-out cubic
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(ease * target);
+
+                    if (format === 'k') {
+                        if (current >= 1000) {
+                            counter.textContent = Math.floor(current / 1000) + 'K' + suffix;
+                        } else {
+                            counter.textContent = current + suffix;
+                        }
+                    } else {
+                        counter.textContent = current + suffix;
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                }
+
+                requestAnimationFrame(update);
+            });
+        }
+
+        // Trigger counters when stats section is in view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) statsObserver.observe(statsSection);
+
+        // Service item interaction
+        document.querySelectorAll('.service-item.clickable').forEach(item => {
+            item.addEventListener('click', function() {
+                const illustration = document.getElementById('illustrationCard');
+                const cursor = document.getElementById('cursorIndicator');
+
+                // Remove active class from all items
+                document.querySelectorAll('.service-item.clickable').forEach(i => {
+                    i.classList.remove('active');
+                });
+
+                // Add active class to clicked item
+                this.classList.add('active');
+
+                // Trigger illustration animation
+                illustration.style.animation = 'none';
+                setTimeout(() => {
+                    illustration.style.animation = 'illustrationPulse 0.6s ease-out';
+                }, 10);
+
+                // Trigger cursor animation
+                cursor.classList.remove('active');
+                setTimeout(() => {
+                    cursor.classList.add('active');
+                }, 10);
+            });
+        });
+    </script>
+</body>
+</html>
