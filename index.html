@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nav - The AI Agent for your Mac</title>
-    <meta name="description" content="Nav turns any LLM into a computer-use agent for macOS. It reads the accessibility tree like a DOM, then clicks, types, and moves through real apps.">
-    <meta name="keywords" content="Nav, AI agent, macOS, Mac automation, AI assistant, desktop agent, on-device AI">
+    <title>Nav - General use macOS AI agent</title>
+    <meta name="description" content="Nav is a general computer-use agent for macOS. It reads the accessibility tree like a DOM, then any LLM can click, type, and move through real apps.">
+    <meta name="keywords" content="Nav, AI agent, macOS, Mac automation, computer use, desktop agent">
     <meta name="author" content="Nav">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Nav - The AI Agent for your Mac">
+    <meta property="og:title" content="Nav - General use macOS AI agent">
     <meta property="og:description" content="Nav turns any LLM into a computer-use agent. It reads the Mac accessibility tree like a DOM, then takes real actions.">
     <meta property="og:image" content="navlogo.png">
     <meta property="og:site_name" content="Nav">
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Nav - The AI Agent for your Mac">
+    <meta name="twitter:title" content="Nav - General use macOS AI agent">
     <meta name="twitter:description" content="Nav turns any LLM into a computer-use agent. It reads the Mac accessibility tree like a DOM, then takes real actions.">
     <meta name="twitter:image" content="navlogo.png">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="navlogo.png">
     <link rel="apple-touch-icon" href="navlogo.png">
 
@@ -33,1294 +30,346 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #1d1d1f;
-            background: #fff;
+            color: #1c1c1c;
+            background: #f3f3f1;
             -webkit-font-smoothing: antialiased;
         }
 
-        .page-container {
-            max-width: 1120px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(251, 251, 253, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            padding: 12px 22px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header img {
-            width: 22px;
-            height: 22px;
-            border-radius: 5px;
-        }
-
-        .header span {
-            font-size: 17px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 0px 40px 0;
-            text-align: center;
-        }
-
-        .macbook-container {
-            position: relative;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .macbook-container img {
-            width: 100%;
-            display: block;
-        }
-
-        .hero-content {
-            position: absolute;
-            top: 6.5%;
-            left: 11.5%;
-            right: 11.5%;
-            bottom: 14%;
+        .page {
+            height: 100dvh;
+            max-width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 22px 28px 24px;
+            gap: 8px;
+            min-width: 0;
         }
 
-        .badge {
-            display: inline-flex;
+        header {
+            position: relative;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            background: #f5f5f7;
-            border-radius: 980px;
-            padding: 4px 12px 4px 4px;
-            font-size: 12px;
+            justify-content: space-between;
+            flex: 0 0 auto;
+            min-width: 0;
+            font-size: 14px;
             font-weight: 500;
             letter-spacing: -0.01em;
-            color: #1d1d1f;
-            margin-bottom: 10px;
+            z-index: 2;
         }
 
-        .badge .apple-logo-img {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-        }
-
-        .hero-title {
-            font-size: 56px;
-            font-weight: 500;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            color: #1d1d1f;
-            margin-bottom: 8px;
-        }
-
-        .hero-subtitle {
-            font-size: 28px;
-            font-weight: 400;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-            color: #6e6e73;
-            margin-bottom: 12px;
-        }
-
-        .hero-subtitle .icons {
-            display: inline-flex;
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             gap: 2px;
-            vertical-align: middle;
-            margin-left: 4px;
+            line-height: 1.15;
         }
 
-        .hero-subtitle .icon-pill {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(135deg, #ff8a65, #ffb74d);
-            border-radius: 10px;
-            width: 40px;
-            height: 40px;
-            justify-content: center;
-        }
-
-        .hero-subtitle .icon-pill.green {
-            background: linear-gradient(135deg, #aed581, #81c784);
-        }
-
-        .hero-subtitle .icon-pill svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #0071e3;
-            color: #fff;
-            border: none;
-            border-radius: 980px;
-            padding: 11px 22px;
-            font-size: 17px;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            cursor: pointer;
-            text-decoration: none;
-            margin-bottom: 8px;
-        }
-
-        .cta-button:hover {
-            background: #0077ed;
-        }
-
-        .hero-note {
-            font-size: 14px;
-            color: #6e6e73;
-        }
-
-        /* Feature Bar */
-        .feature-bar {
-            padding: 0 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            border-top: none;
-            border-bottom: none;
-            margin: 16px 0;
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 16px 12px;
-            font-size: 17px;
-            font-weight: 500;
-            letter-spacing: -0.015em;
-            color: #1d1d1f;
-            text-align: center;
-        }
-
-        .feature-item svg {
-            width: 18px;
-            height: 18px;
-            color: #1d1d1f;
-            flex-shrink: 0;
-        }
-
-        /* Introduction Section */
-        .introduction {
-            padding: 32px 40px 20px;
-        }
-
-        .section-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .credit {
             font-size: 12px;
             font-weight: 500;
             letter-spacing: -0.01em;
-            color: #6e6e73;
-            margin-bottom: 8px;
+            color: inherit;
+            text-decoration: none;
         }
 
-        .section-label .dot {
-            display: none;
+        .credit:hover {
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
-        .section-label-left {
-            justify-content: flex-start;
-        }
-
-        .intro-heading {
-            font-size: 40px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
+        .role {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 46%;
             text-align: center;
-            line-height: 1.1;
-            color: #1d1d1f;
-            max-width: 760px;
-            margin: 0 auto 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .intro-copy {
-            font-size: 19px;
-            font-weight: 400;
-            letter-spacing: -0.015em;
-            line-height: 1.45;
-            color: #6e6e73;
-            text-align: center;
-            max-width: 680px;
-            margin: 0 auto 20px;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 48px;
-            font-weight: 500;
-            letter-spacing: -0.03em;
-            color: #1d1d1f;
-            margin-bottom: 6px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #6e6e73;
-        }
-
-        /* Benefits Section */
-        .benefits {
-            background: #f5f5f7;
-            padding: 32px 40px;
-        }
-
-        .benefits-inner {
-        }
-
-        .benefits-heading {
-            font-size: 40px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px 24px;
-        }
-
-        .benefit-card {
-            text-align: center;
-        }
-
-        .benefit-icon {
-            width: 32px;
-            height: 32px;
-            background: none;
+        .meta {
+            justify-self: end;
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            color: #1d1d1f;
-        }
-
-        .benefit-icon svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        .benefit-title {
-            font-size: 19px;
-            font-weight: 500;
-            letter-spacing: -0.015em;
-            margin-bottom: 6px;
-        }
-
-        .benefit-desc {
-            font-size: 14px;
-            color: #6e6e73;
-            line-height: 1.45;
-            max-width: 280px;
-            margin: 0 auto;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 32px 40px;
-        }
-
-        .services-heading {
-            font-size: 40px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1.1;
-        }
-
-        .services-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .service-list {
-            display: flex;
-            flex-direction: column;
             gap: 16px;
         }
 
-        .service-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .service-number {
-            font-size: 12px;
-            color: #86868b;
-            font-weight: 500;
-            min-width: 40px;
-            padding-top: 6px;
-        }
-
-        .service-item-content h3 {
-            font-size: 21px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 6px;
-            color: #1d1d1f;
-        }
-
-        .service-item-content p {
-            font-size: 14px;
-            color: #6e6e73;
-            line-height: 1.45;
-        }
-
-        .service-item.clickable {
-            cursor: pointer;
-        }
-
-        .service-item.clickable:hover h3 {
-            color: #0071e3;
-        }
-
-        .service-item.clickable.active h3,
-        .service-item.clickable.active p {
-            color: #1a1a1a;
-        }
-
-        .service-illustration {
-            background: #f5f5f7;
-            border-radius: 18px;
-            padding: 24px;
-            min-height: 280px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .illustration-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 24px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .illustration-card .avatars {
-            display: flex;
-            gap: -8px;
-            margin-bottom: 16px;
-        }
-
-        .illustration-card .avatar-circle {
-            width: 32px;
-            height: 32px;
+        .dot {
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
-            background: #ddd;
-            border: 2px solid #fff;
-            margin-right: -8px;
+            background: #111;
+            flex: 0 0 auto;
         }
 
-        .illustration-card .link-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
+        .stage {
+            position: relative;
+            flex: 1;
+            min-height: 0;
         }
 
-        .illustration-card .radio {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid #ddd;
-        }
-
-        .illustration-card .radio.active {
-            border-color: #0071e3;
-            background: #0071e3;
-        }
-
-        .illustration-card .link-text {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .illustration-card .bottom-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 16px;
-            padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .illustration-card .get-link {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .illustration-card .get-link small {
-            display: block;
-            font-weight: 400;
-            color: #999;
-            font-size: 12px;
-        }
-
-        .illustration-card .create-btn {
-            background: #0071e3;
-            color: #fff;
-            border: none;
-            border-radius: 980px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .cursor-indicator {
-            display: none;
-        }
-
-        /* Works With Apps */
-        .works-with {
-            padding: 36px 40px;
+        .bg-name {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -0.04em;
             text-align: center;
-        }
-
-        .works-with p {
-            font-size: 17px;
-            font-weight: 500;
-            letter-spacing: -0.015em;
-            color: #1d1d1f;
-            margin-bottom: 16px;
-        }
-
-        .app-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .app-logo {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .app-logo svg {
-            width: 32px;
-            height: 32px;
-            fill: #333;
-        }
-
-        /* Testimonial */
-        .testimonial {
-            padding: 32px 40px;
-            text-align: center;
-        }
-
-        .testimonial-quote {
-            font-size: 32px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            line-height: 1.15;
-            color: #1d1d1f;
-            max-width: 760px;
-            margin: 0 auto 24px;
-        }
-
-        .testimonial-name {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .testimonial-info {
-            font-size: 14px;
-            color: #6e6e73;
-        }
-
-        /* How it Works */
-        .how-it-works {
-            padding: 32px 40px;
-        }
-
-        .how-steps {
-            max-width: 800px;
-            margin: 16px auto 0;
-        }
-
-        .how-step {
-            display: grid;
-            grid-template-columns: 60px 100px 1fr;
-            gap: 20px;
-            align-items: flex-start;
-            margin-bottom: 24px;
-        }
-
-        .how-step-number {
-            font-size: 12px;
-            font-weight: 500;
-            color: #86868b;
-            padding-top: 8px;
-        }
-
-        .how-step-tag {
-            display: inline-flex;
-            align-items: center;
-            font-size: 12px;
-            font-weight: 500;
-            color: #6e6e73;
-            margin-top: 8px;
-        }
-
-        .how-step-content h3 {
-            font-size: 28px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            margin-bottom: 10px;
-            line-height: 1.15;
-        }
-
-        .how-step-content p {
-            font-size: 17px;
-            color: #6e6e73;
-            line-height: 1.45;
-        }
-
-        /* FAQ */
-        .faq {
-            background: #f5f5f7;
-            padding: 32px 40px;
-        }
-
-        .faq-inner {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .faq-heading {
-            font-size: 40px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .faq-item {
-            border-top: 1px solid #d2d2d7;
-            overflow: hidden;
-        }
-
-        .faq-item:last-child {
-            border-bottom: 1px solid #d2d2d7;
-        }
-
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            cursor: pointer;
-            font-size: 17px;
-            font-weight: 500;
-            letter-spacing: -0.015em;
+            font-size: clamp(128px, 21vw, 320px);
+            font-weight: 700;
+            letter-spacing: -0.06em;
+            line-height: 0.8;
+            color: #111;
+            pointer-events: none;
             user-select: none;
+            z-index: 0;
         }
 
-        .faq-toggle {
-            font-size: 21px;
-            font-weight: 400;
-            color: #6e6e73;
-            flex-shrink: 0;
-            margin-left: 16px;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-        }
-
-        .faq-answer.open {
-            max-height: 240px;
-        }
-
-        .faq-answer-content {
-            padding: 0 48px 18px 0;
-            font-size: 14px;
-            color: #6e6e73;
-            line-height: 1.45;
-        }
-
-        /* Footer CTA */
-        .footer-cta {
-            padding: 36px 40px;
+        .bento {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 80%;
+            z-index: 1;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            align-items: center;
+            grid-template-columns: 0.92fr 1.35fr 0.95fr;
+            grid-template-rows: 1.18fr 0.92fr;
+            gap: 14px;
         }
 
-        .footer-left {
+        .card {
+            background: rgba(230, 230, 228, 0.58);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), inset 0 10px 28px rgba(0, 0, 0, 0.05);
+            border-radius: 28px;
+            padding: 22px 24px 18px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: space-between;
+            min-height: 0;
+            min-width: 0;
+            color: inherit;
+            text-decoration: none;
         }
 
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .card-1 { grid-column: 1; grid-row: 1; }
+        .card-2 { grid-column: 2 / span 2; grid-row: 1; }
+        .card-3 { grid-column: 1 / span 2; grid-row: 2; }
+        .card-4 { grid-column: 3; grid-row: 2; }
 
-        .footer-logo img {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-        }
-
-        .footer-logo span {
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        .footer-tagline {
-            font-size: 40px;
-            font-weight: 500;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-        }
-
-        .footer-card {
-            background: #f5f5f7;
-            border-radius: 18px;
-            padding: 24px;
-        }
-
-        .footer-card-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .footer-card-logo img {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-        }
-
-        .footer-card-logo span {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .footer-card h3 {
-            font-size: 28px;
+        .copy {
+            font-size: clamp(14px, 1.35vw, 18px);
             font-weight: 500;
             letter-spacing: -0.02em;
-            line-height: 1.15;
-            margin-bottom: 20px;
+            line-height: 1.35;
+            max-width: 28em;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
-        .footer-card .book-btn {
-            display: block;
-            width: 100%;
-            background: #0071e3;
-            color: #fff;
-            border: none;
-            border-radius: 980px;
-            padding: 12px 16px;
-            font-size: 17px;
-            font-weight: 400;
-            cursor: pointer;
-            text-align: center;
-            margin-bottom: 20px;
+        .card-1 .copy,
+        .card-4 .copy {
+            font-size: clamp(13px, 1.15vw, 16px);
+            max-width: 18em;
         }
 
-        .footer-card .book-btn:hover {
-            background: #0077ed;
+        .card:hover .copy,
+        .card:focus-visible .copy {
+            opacity: 1;
+            transform: none;
         }
 
-        .footer-card .reach-out {
-            font-size: 14px;
-            color: #6e6e73;
-            line-height: 1.45;
-            margin-bottom: 20px;
+        .card:hover,
+        .card:focus-visible {
+            background: rgba(222, 222, 220, 0.72);
         }
 
-        .footer-card .email-label {
-            font-size: 12px;
-            color: #86868b;
-            margin-bottom: 4px;
+        .card:focus-visible {
+            outline: 2px solid #111;
+            outline-offset: 3px;
         }
 
-        .footer-card .email {
-            font-size: 20px;
+        .foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
             font-weight: 500;
+            letter-spacing: -0.01em;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                padding: 12px 20px;
+        .arrow {
+            width: 16px;
+            height: 16px;
+            display: block;
+        }
+
+        .card:hover .arrow,
+        .card:focus-visible .arrow {
+            transform: translate(2px, -2px);
+        }
+
+        .arrow {
+            transition: transform 0.2s ease;
+        }
+
+        .copy a {
+            color: inherit;
+            text-underline-offset: 2px;
+        }
+
+        .get {
+            display: block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 820px) {
+            .page {
+                padding: 16px 14px 14px;
             }
 
-            .hero {
-                padding: 30px 20px 0;
+            header {
+                font-size: 11px;
             }
 
-            .macbook-container img {
-                display: none;
+            .role {
+                position: static;
+                transform: none;
+                flex: 1;
+                min-width: 0;
+                max-width: none;
+                margin: 0 8px;
             }
 
-            .hero-content {
-                position: relative;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                padding: 20px;
+            .meta {
+                gap: 8px;
             }
 
-            .hero-title {
-                font-size: 40px;
+            .credit {
+                font-size: 10px;
             }
 
-            .hero-subtitle {
-                font-size: 21px;
+            .bg-name {
+                font-size: 22vw;
             }
 
-            .feature-bar {
-                flex-direction: column;
-                padding: 0 20px;
-                gap: 12px;
-                margin: 20px 0;
+            .bento {
+                height: 78%;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                gap: 10px;
             }
 
-            .feature-item {
-                border-right: none;
-                border-bottom: none;
-                justify-content: center;
-                padding: 16px 20px;
+            .card-1, .card-2, .card-3, .card-4 {
+                grid-column: auto;
+                grid-row: auto;
             }
 
-            .introduction {
-                padding: 32px 20px;
+            .card {
+                border-radius: 20px;
+                padding: 14px 14px 12px;
             }
 
-            .intro-heading {
-                font-size: 28px;
+            .copy, .card-1 .copy, .card-4 .copy {
+                font-size: 12px;
+                max-width: none;
             }
 
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 32px;
+            .foot {
+                font-size: 13px;
             }
+        }
 
-            .stat-value {
-                font-size: 40px;
-            }
-
-            .benefits {
-                padding: 32px 20px;
-            }
-
-            .benefits-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .benefits-heading {
-                font-size: 28px;
-            }
-
-            .services {
-                padding: 32px 20px;
-            }
-
-            .services-heading {
-                font-size: 28px;
-            }
-
-            .services-content {
-                grid-template-columns: 1fr;
-            }
-
-            .works-with {
-                padding: 40px 20px;
-            }
-
-            .app-logos {
-                gap: 24px;
-            }
-
-            .testimonial {
-                padding: 32px 20px;
-            }
-
-            .testimonial-quote {
-                font-size: 18px;
-            }
-
-            .how-it-works {
-                padding: 32px 20px;
-            }
-
-            .how-step {
-                grid-template-columns: 40px 80px 1fr;
-                gap: 12px;
-            }
-
-            .how-step-content h3 {
-                font-size: 22px;
-            }
-
-            .faq {
-                padding: 32px 20px;
-            }
-
-            .faq-heading {
-                font-size: 28px;
-            }
-
-            .footer-cta {
-                grid-template-columns: 1fr;
-                padding: 32px 20px;
-            }
-
-            .footer-tagline {
-                font-size: 28px;
+        @media (prefers-reduced-motion: reduce) {
+            .copy, .arrow {
+                transition: none;
             }
         }
     </style>
 </head>
 <body>
+    <div class="page">
+        <header>
+            <div class="brand">
+                <div>Nav</div>
+                <a class="credit" href="https://github.com/jvalaj">made by @jvalaj</a>
+            </div>
+            <div class="role">General use macOS AI agent</div>
+            <div class="meta">
+                <span id="clock">Tampa</span>
+                <span class="dot" aria-hidden="true"></span>
+            </div>
+        </header>
 
-    <div class="page-container">
+        <main class="stage">
+            <div class="bg-name" aria-hidden="true">Nav</div>
+            <div class="bento">
+                <article class="card card-1" tabindex="0">
+                    <p class="copy">You name a task. Nav takes it on as a general computer-use agent for the Mac.</p>
+                    <div class="foot">
+                        <span>1. Task</span>
+                        <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4.5 11.5L11.5 4.5M11.5 4.5H6.2M11.5 4.5V9.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </article>
 
-    <!-- Header -->
-    <div class="header-wrapper">
-    <header class="header">
-        <img src="navlogo.png" alt="Nav Logo">
-        <span>Nav</span>
-    </header>
+                <article class="card card-2" tabindex="0">
+                    <p class="copy">It reads the accessibility tree, like a DOM, so each button, field, and menu has a name.</p>
+                    <div class="foot">
+                        <span>2. Tree</span>
+                        <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4.5 11.5L11.5 4.5M11.5 4.5H6.2M11.5 4.5V9.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </article>
+
+                <article class="card card-3" tabindex="0">
+                    <p class="copy">Any model chooses the move. You bring your own API key for Claude, GPT, Gemini, or a local LLM.</p>
+                    <div class="foot">
+                        <span>3. Model</span>
+                        <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4.5 11.5L11.5 4.5M11.5 4.5H6.2M11.5 4.5V9.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </article>
+
+                <article class="card card-4" tabindex="0">
+                    <p class="copy">It clicks, types, and scrolls for real. Vision fills in only when the tree is thin.<a class="get" href="https://github.com/jvalaj/navdesktopapp">Get Nav</a></p>
+                    <div class="foot">
+                        <span>4. Act</span>
+                        <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M4.5 11.5L11.5 4.5M11.5 4.5H6.2M11.5 4.5V9.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </article>
+            </div>
+        </main>
     </div>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="macbook-container">
-            <img src="apple-macbookpro14-front.png" alt="MacBook Pro">
-            <div class="hero-content">
-                <div class="badge">
-                    <img src="Apple-Logoo.png" alt="Apple" class="apple-logo-img">
-                    Available for macOS
-                </div>
-                <div class="hero-title">Nav</div>
-                <div class="hero-subtitle">Computer use for any LLM.</div>
-                <a href="https://github.com/jvalaj/navdesktopapp" class="cta-button">Get Started</a>
-                <p class="hero-note">Reads the accessibility tree, then acts</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Feature Bar -->
-    <div class="feature-bar">
-        <div class="feature-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Accessibility tree
-        </div>
-        <div class="feature-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Any LLM
-        </div>
-        <div class="feature-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Real Mac actions
-        </div>
-    </div>
-
-    <!-- Introduction -->
-    <section class="introduction">
-        <div class="section-label">
-            <span class="dot"></span>
-            Introduction
-        </div>
-        <h2 class="intro-heading">Any model. The whole Mac. One agent.</h2>
-        <p class="intro-copy">Nav is a general computer-use agent. It reads the macOS accessibility tree the way a browser agent reads the DOM, hands that structure to whatever LLM you choose, and then clicks, types, and scrolls on the real desktop.</p>
-        <div class="stats">
-            <div>
-                <div class="stat-value">Tree</div>
-                <div class="stat-label">Like a DOM for apps</div>
-            </div>
-            <div>
-                <div class="stat-value">Any</div>
-                <div class="stat-label">LLM, cloud or local</div>
-            </div>
-            <div>
-                <div class="stat-value">Act</div>
-                <div class="stat-label">Click, type, keys</div>
-            </div>
-            <div>
-                <div class="stat-value">Mac</div>
-                <div class="stat-label">On the real desktop</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Benefits -->
-    <section class="benefits">
-        <div class="benefits-inner">
-            <div class="section-label">
-                <span class="dot"></span>
-                Benefits
-            </div>
-            <h2 class="benefits-heading">A DOM for your Mac, then any model can use it.</h2>
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3l3.5 7 7.5 1-5.5 5 1.5 7.5L13 19.5 6 23.5l1.5-7.5L2 11l7.5-1z"/></svg>
-                    </div>
-                    <h3 class="benefit-title">Named controls</h3>
-                    <p class="benefit-desc">Buttons, fields, menus, and links come from the accessibility tree, with a role, a label, and a place to click.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12h8M12 8v8"/></svg>
-                    </div>
-                    <h3 class="benefit-title">Bring your model</h3>
-                    <p class="benefit-desc">Claude, ChatGPT, Gemini, GLM, or a local OpenAI-compatible server. Nav turns that model into a computer-use agent.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-                    </div>
-                    <h3 class="benefit-title">General computer use</h3>
-                    <p class="benefit-desc">Open Notes, fill a form, move across apps. You describe the goal. Nav works the interface in front of it.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/></svg>
-                    </div>
-                    <h3 class="benefit-title">See, then decide</h3>
-                    <p class="benefit-desc">The model gets the screen and a structured list of elements. It chooses "click 12" instead of guessing a coordinate.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-                    </div>
-                    <h3 class="benefit-title">Vision as backup</h3>
-                    <p class="benefit-desc">If an app hides its tree, Nav falls back to the screenshot and still returns the same boxes, labels, and click points.</p>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 15h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                    </div>
-                    <h3 class="benefit-title">Real keystrokes</h3>
-                    <p class="benefit-desc">Clicks, typing, hotkeys, and scrolling happen on your Mac. Then Nav looks again and continues until the task is done.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services -->
-    <section class="services">
-        <div class="section-label">
-            <span class="dot"></span>
-            Services
-        </div>
-        <h2 class="services-heading">See the interface. Ask any model. Do the action.</h2>
-        <div class="services-content">
-            <div class="service-list">
-                <div class="service-item clickable" data-service="1">
-                    <span class="service-number">/001</span>
-                    <div class="service-item-content">
-                        <h3>Read the tree</h3>
-                        <p>Nav walks the frontmost app the way a browser walks the DOM: role, label, bounds, and a click point for each control.</p>
-                    </div>
-                </div>
-                <div class="service-item clickable" data-service="2">
-                    <span class="service-number">/002</span>
-                    <div class="service-item-content">
-                        <h3>Hand it to any LLM</h3>
-                        <p>That list, plus the screenshot, goes to the model you picked. The model returns the next action as structured JSON.</p>
-                    </div>
-                </div>
-                <div class="service-item clickable" data-service="3">
-                    <span class="service-number">/003</span>
-                    <div class="service-item-content">
-                        <h3>Act, then look again</h3>
-                        <p>Nav clicks or types, takes the next screenshot, and repeats until the goal is done or you stop it.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="service-illustration" id="serviceIllustration">
-                <div class="cursor-indicator" id="cursorIndicator">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="2">
-                        <path d="M5 3l14 8-6.5 1.5L11 19z"></path>
-                    </svg>
-                </div>
-                <div class="illustration-card" id="illustrationCard">
-                    <div class="avatars">
-                        <div class="avatar-circle" style="background: #c5a882;"></div>
-                        <div class="avatar-circle" style="background: #8baac5;"></div>
-                        <div class="avatar-circle" style="background: #a8c582;"></div>
-                    </div>
-                    <div style="height:1px;background:#f0f0f0;margin:12px 0;"></div>
-                    <div class="link-row">
-                        <div class="radio active"></div>
-                        <span class="link-text">https://insert.supply</span>
-                    </div>
-                    <div class="link-row">
-                        <div class="radio"></div>
-                        <span class="link-text">Muzamal Hussain</span>
-                    </div>
-                    <div class="bottom-row">
-                        <div class="get-link">
-                            Get Link
-                            <small>Invite by email</small>
-                        </div>
-                        <button class="create-btn">Create</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Works With Apps -->
-    <section class="works-with">
-        <p>Works across the apps already on your Mac.</p>
-        <div class="app-logos">
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M21 5L12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM17 13v8M13 17h8"/></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="none" stroke="#333" stroke-width="2"/><text x="6" y="16" font-size="11" font-weight="700" fill="#333">Be</text></svg>
-            </div>
-            <div class="app-logo">
-                <svg viewBox="0 0 24 24"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonial -->
-    <section class="testimonial">
-        <p class="testimonial-quote">Give it a goal. Nav reads the screen like a document, asks the model what to do, and does it on the Mac in front of you.</p>
-        <p class="testimonial-name">Perceive. Reason. Act.</p>
-        <p class="testimonial-info">The same loop, any model</p>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <div class="section-label">
-            <span class="dot"></span>
-            How it works
-        </div>
-        <h2 class="intro-heading">From a sentence to a click.</h2>
-        <div class="how-steps">
-            <div class="how-step">
-                <span class="how-step-number">/001</span>
-                <span class="how-step-tag">Perceive</span>
-                <div class="how-step-content">
-                    <h3>Read the accessibility tree</h3>
-                    <p>You type a goal, like "Open Notes and create a new note." Nav screenshots the Mac and walks the accessibility tree: buttons, text fields, menus, links, each with an id, a role, a label, and a box.</p>
-                </div>
-            </div>
-            <div class="how-step">
-                <span class="how-step-number">/002</span>
-                <span class="how-step-tag">Reason</span>
-                <div class="how-step-content">
-                    <h3>Let any LLM choose the next action</h3>
-                    <p>The model sees the screenshot and the element list. It answers with JSON, such as click element 12 or type "Hello." It never has to invent a pixel coordinate.</p>
-                </div>
-            </div>
-            <div class="how-step">
-                <span class="how-step-number">/003</span>
-                <span class="how-step-tag">Act</span>
-                <div class="how-step-content">
-                    <h3>Click, type, and check again</h3>
-                    <p>Nav maps that id to the control on screen, accounting for Retina scaling, and performs the click or keystroke. Then it looks again. If the UI did not change, it reuses the tree. If the goal is done, it stops.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <div class="faq-inner">
-            <div class="section-label">
-                <span class="dot"></span>
-                Faq's
-            </div>
-            <h2 class="faq-heading">Understanding Nav</h2>
-
-            <div class="faq-item open">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    What is Nav?
-                    <span class="faq-toggle">&times;</span>
-                </div>
-                <div class="faq-answer open">
-                    <div class="faq-answer-content">
-                        Nav is a computer-use agent for macOS. It turns the model you already use into something that can see your screen, read the accessibility tree, and operate apps for you.
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    How is the accessibility tree like the DOM?
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        A web agent reads HTML: tags, text, and boxes. Nav reads the macOS accessibility tree the same way. Each control has a role, a label, and a location. The model refers to those controls by id. Vision fills in when an app does not expose its tree.
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    Which models can I use?
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        Any of the built-in providers: Claude, ChatGPT, Gemini, or GLM. You can also point Nav at a local OpenAI-compatible server such as Ollama, LM Studio, or vLLM. The agent loop stays the same. Only the model changes.
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    What can it actually do?
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        General computer use on your Mac. Open an app, click a button, type into a field, press a shortcut, scroll, and continue across windows until the goal is finished. It is not limited to one scripted workflow.
-                    </div>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    Where do actions happen?
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        On your Mac. Nav is a desktop app. The model call goes to the provider you select, and the click, type, and scroll happen locally through the real interface.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer CTA -->
-    <section class="footer-cta">
-        <div class="footer-left">
-            <div class="footer-logo">
-                <img src="navlogo.png" alt="Nav Logo">
-                <span>Nav</span>
-            </div>
-            <h2 class="footer-tagline">Any LLM. Your Mac. Real actions.</h2>
-        </div>
-        <div class="footer-card">
-            <div class="footer-card-logo">
-                <img src="navlogo.png" alt="Nav Logo">
-                <span>Nav</span>
-            </div>
-            <h3>Book a 15-min<br>intro call</h3>
-            <button class="book-btn">Book a Call</button>
-            <p class="reach-out">Reach out if you need a Nav<br>to meet your business needs.</p>
-            <p class="email-label">or Email us at</p>
-            <p class="email">careersatnavai@gmail.com</p>
-        </div>
-    </section>
-
-    </div><!-- end page-container -->
 
     <script>
-        function toggleFaq(el) {
-            const item = el.parentElement;
-            const answer = item.querySelector('.faq-answer');
-            const toggle = item.querySelector('.faq-toggle');
-            const isOpen = item.classList.contains('open');
-
-            // Close all
-            document.querySelectorAll('.faq-item').forEach(i => {
-                i.classList.remove('open');
-                i.querySelector('.faq-answer').classList.remove('open');
-                i.querySelector('.faq-toggle').textContent = '+';
-            });
-
-            // Open clicked if it was closed
-            if (!isOpen) {
-                item.classList.add('open');
-                answer.classList.add('open');
-                toggle.textContent = '\u00d7';
-            }
+        function tick() {
+            var time = new Intl.DateTimeFormat("en-US", {
+                timeZone: "America/New_York",
+                hour: "numeric",
+                minute: "2-digit"
+            }).format(new Date());
+            document.getElementById("clock").textContent = "Tampa \u2022 " + time;
         }
-
-        document.querySelectorAll('.service-item.clickable').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.service-item.clickable').forEach(i => {
-                    i.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
+        tick();
+        setInterval(tick, 15000);
     </script>
 </body>
 </html>
